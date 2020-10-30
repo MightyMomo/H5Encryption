@@ -1,0 +1,62 @@
+﻿@model H5Encryption.Models.DB.TodoItem
+@using H5Encryption.Models.DB;
+
+@{
+    ViewData["Title"] = "Todos";
+}
+
+<h1>Todo liste</h1>
+
+<h>@ViewBag.User.Username</h5>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Todos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDone" /> @Html.DisplayNameFor(model => model.IsDone)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Opret" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@foreach (TodoItem todo in ViewBag.User.TodoItems)
+{
+    <div style="border: 1px solid black; margin-bottom: 10px">
+        <h2 style="margin-left: 10px">@todo.Title</h2>
+        <p style="margin-left: 10px">
+            @if (todo.IsDone)
+            {
+                <input type="checkbox" onclick="return false;" checked="checked" />
+            }
+            else
+            {
+                <input type="checkbox" onclick="return false;" />
+            }
+            @todo.Description
+        </p>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
